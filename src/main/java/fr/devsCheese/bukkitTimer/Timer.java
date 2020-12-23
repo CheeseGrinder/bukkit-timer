@@ -1,6 +1,7 @@
 package fr.devsCheese.bukkitTimer;
 
 import javafx.util.Callback;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -8,12 +9,15 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Timer {
 
     private final Map<UUID, Float> timers = new HashMap<>();
     private final Plugin plugin;
     private final DecimalFormat decimal;
+    private final Pattern POINT_TO_UNDERSCORE = Pattern.compile("\\.");
 
     public Timer(Plugin plugin) {
         this.plugin = plugin;
@@ -35,10 +39,12 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    this.timeLeft = formatTimeLeft(timeLeft);
-
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRest(timeLeft);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -60,11 +66,13 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    this.timeLeft = formatTimeLeft(timeLeft);
-
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
                         callback.call();
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRest(timeLeft, callback);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -86,11 +94,13 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    this.timeLeft = formatTimeLeft(timeLeft);
-
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
                         callback.call(timeLeft);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRest(timeLeft, callback);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -111,11 +121,15 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    float timeLeft = formatTimeLeft(getCoolDown(uuid));
+                    float timeLeft = getCoolDown(uuid);
 
                     if (timeLeft >= decrement) {
                         timeLeft = formatTimeLeft(timeLeft - decrement);
                         setCoolDown(uuid, timeLeft);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRest(timeLeft, uuid);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -138,13 +152,17 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    float timeLeft = formatTimeLeft(getCoolDown(uuid));
+                    float timeLeft = getCoolDown(uuid);
 
                     if (timeLeft >= decrement) {
                         timeLeft = formatTimeLeft(timeLeft - decrement);
 
                         callback.call();
                         setCoolDown(uuid, timeLeft);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRest(timeLeft, uuid, callback);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -166,13 +184,17 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    float timeLeft = formatTimeLeft(getCoolDown(uuid));
+                    float timeLeft = getCoolDown(uuid);
 
                     if (timeLeft >= decrement) {
                         timeLeft = formatTimeLeft(timeLeft - decrement);
 
                         callback.call(timeLeft);
                         setCoolDown(uuid, timeLeft);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRest(timeLeft, uuid, callback);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -192,10 +214,12 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    this.timeLeft = formatTimeLeft(timeLeft);
-
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRestAsync(timeLeft);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -217,12 +241,13 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    this.timeLeft = formatTimeLeft(timeLeft);
-
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
-
                         callback.call();
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRestAsync(timeLeft, callback);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         callback.call();
@@ -245,12 +270,13 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    this.timeLeft = formatTimeLeft(timeLeft);
-
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
-
                         callback.call(timeLeft);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRestAsync(timeLeft, callback);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         callback.call(timeLeft);
@@ -272,12 +298,15 @@ public class Timer {
             @Override
             public void run() {
                 if (!isCancelled()) {
-                    float timeLeft = formatTimeLeft(getCoolDown(uuid));
+                    float timeLeft = getCoolDown(uuid);
 
                     if (timeLeft >= decrement) {
                         timeLeft = formatTimeLeft(timeLeft - decrement);
-
                         setCoolDown(uuid, timeLeft);
+                    }
+                    if (timeLeft < decrement && timeLeft > 0f) {
+                        Timer.this.runRestAsync(timeLeft, uuid);
+                        cancel();
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -299,13 +328,17 @@ public class Timer {
 
             @Override
             public void run() {
-                float timeLeft = formatTimeLeft(getCoolDown(uuid));
+                float timeLeft = getCoolDown(uuid);
 
                 if (timeLeft >= decrement) {
                     timeLeft = formatTimeLeft(timeLeft - decrement);
 
                     callback.call();
                     setCoolDown(uuid, timeLeft);
+                }
+                if (timeLeft < decrement && timeLeft > 0f) {
+                    Timer.this.runRestAsync(timeLeft, uuid, callback);
+                    cancel();
                 }
                 if (timeLeft <= 0) {
                     callback.call();
@@ -326,13 +359,17 @@ public class Timer {
 
             @Override
             public void run() {
-                float timeLeft = formatTimeLeft(getCoolDown(uuid));
+                float timeLeft = getCoolDown(uuid);
 
                 if (timeLeft >= decrement) {
                     timeLeft = formatTimeLeft(timeLeft - decrement);
 
                     callback.call(timeLeft);
                     setCoolDown(uuid, timeLeft);
+                }
+                if (timeLeft < decrement && timeLeft > 0f) {
+                    Timer.this.runRestAsync(timeLeft, uuid, callback);
+                    cancel();
                 }
                 if (timeLeft <= 0) {
                     callback.call(0f);
@@ -383,6 +420,82 @@ public class Timer {
 
     private float formatTimeLeft(float timeLeft) {
         return Math.round(timeLeft * 10f) / 10f;
+    }
+
+    private void runRest(float duration) {
+        run(duration, getTimeValue(duration));
+    }
+
+    private void runRest(float duration, EmptyCallback callback) {
+        run(duration, getTimeValue(duration), callback);
+    }
+
+    private void runRest(float duration, Callback<Float, Float> callback) {
+        run(duration, getTimeValue(duration), (Float overTime) -> {
+            if (overTime == 0) {
+                callback.call(overTime);
+            }
+            return null;
+        });
+    }
+
+    private void runRest(float duration, UUID uuid) {
+        run(duration, getTimeValue(duration), uuid);
+    }
+
+    private void runRest(float duration, UUID uuid, EmptyCallback callback) {
+        run(duration, getTimeValue(duration), uuid, callback);
+    }
+
+    private void runRest(float duration, UUID uuid, Callback<Float, Float> callback) {
+        run(duration, getTimeValue(duration), uuid, (Float overTime) -> {
+            if (overTime == 0) {
+                callback.call(overTime);
+            }
+            return null;
+        });
+    }
+
+    private void runRestAsync(float duration) {
+        runAsync(duration, getTimeValue(duration));
+    }
+
+    private void runRestAsync(float duration, EmptyCallback callback) {
+        Timer.this.runAsync(duration, getTimeValue(duration), callback);
+    }
+
+    private void runRestAsync(float duration, Callback<Float, Float> callback) {
+        Timer.this.runAsync(duration, getTimeValue(duration), (Float overTime) -> {
+            if (overTime == 0) {
+                callback.call(overTime);
+            }
+            return null;
+        });
+    }
+
+    private void runRestAsync(float duration, UUID uuid) {
+        Timer.this.runAsync(duration, getTimeValue(duration), uuid);
+    }
+
+    private void runRestAsync(float duration, UUID uuid, EmptyCallback callback) {
+        Timer.this.runAsync(duration, getTimeValue(duration), uuid, callback);
+    }
+
+    private void runRestAsync(float duration, UUID uuid, Callback<Float, Float> callback) {
+        Timer.this.runAsync(duration, getTimeValue(duration), uuid, (Float overTime) -> {
+            if (overTime == 0) {
+                callback.call(overTime);
+            }
+            return null;
+        });
+    }
+
+    private Time getTimeValue(float duration) {
+        String rest = POINT_TO_UNDERSCORE
+                .matcher(String.valueOf(duration))
+                .replaceAll("_");
+
+        return Time.valueOf("SECOND_" + rest);
     }
 
 }

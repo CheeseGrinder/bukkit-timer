@@ -1,7 +1,9 @@
 package fr.devsCheese.bukkitTimer;
 
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public enum Time {
 
     SECOND_0_1(0.1f, 2),
@@ -25,4 +27,5 @@ public enum Time {
         this.decrement = decrement;
         this.ticks = ticks;
     }
+
 }
