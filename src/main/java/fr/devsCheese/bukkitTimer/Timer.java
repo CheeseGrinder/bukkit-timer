@@ -1,6 +1,5 @@
 package fr.devsCheese.bukkitTimer;
 
-import javafx.util.Callback;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -84,7 +83,7 @@ public class Timer {
         }.runTaskTimer(plugin, ticks, ticks);
     }
 
-    public void run(float duration, Time time, Callback<Float, Float> callback) {
+    public void run(float duration, Time time, Callback<Float> callback) {
         long ticks = Time.valueOf(time.name()).getTicks();
 
         callback.call(duration);
@@ -174,7 +173,7 @@ public class Timer {
         }.runTaskTimer(plugin, ticks, ticks);
     }
 
-    public void run(float duration, Time time, UUID uuid, Callback<Float, Float> callback) {
+    public void run(float duration, Time time, UUID uuid, Callback<Float> callback) {
         long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
@@ -260,7 +259,7 @@ public class Timer {
         }.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public void runAsync(float duration, Time time, Callback<Float, Float> callback) {
+    public void runAsync(float duration, Time time, Callback<Float> callback) {
         long ticks = Time.valueOf(time.name()).getTicks();
 
         callback.call(duration);
@@ -350,7 +349,7 @@ public class Timer {
         }.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public void runAsync(float duration, Time time, UUID uuid, Callback<Float, Float> callback) {
+    public void runAsync(float duration, Time time, UUID uuid, Callback<Float> callback) {
         long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
@@ -435,13 +434,12 @@ public class Timer {
         run(duration, getTimeValue(duration), callback);
     }
 
-    private void runRest(float duration, Callback<Float, Float> callback) {
+    private void runRest(float duration, Callback<Float> callback) {
         run(duration, getTimeValue(duration), (Float overTime) -> {
             Bukkit.broadcastMessage("overtime ->" + overTime);
             if (overTime == 0) {
                 callback.call(overTime);
             }
-            return null;
         });
     }
 
@@ -453,12 +451,11 @@ public class Timer {
         run(duration, getTimeValue(duration), uuid, callback);
     }
 
-    private void runRest(float duration, UUID uuid, Callback<Float, Float> callback) {
+    private void runRest(float duration, UUID uuid, Callback<Float> callback) {
         run(duration, getTimeValue(duration), uuid, (Float overTime) -> {
             if (overTime == 0) {
                 callback.call(overTime);
             }
-            return null;
         });
     }
 
@@ -470,12 +467,11 @@ public class Timer {
         Timer.this.runAsync(duration, getTimeValue(duration), callback);
     }
 
-    private void runRestAsync(float duration, Callback<Float, Float> callback) {
+    private void runRestAsync(float duration, Callback<Float> callback) {
         Timer.this.runAsync(duration, getTimeValue(duration), (Float overTime) -> {
             if (overTime == 0) {
                 callback.call(overTime);
             }
-            return null;
         });
     }
 
@@ -487,12 +483,11 @@ public class Timer {
         Timer.this.runAsync(duration, getTimeValue(duration), uuid, callback);
     }
 
-    private void runRestAsync(float duration, UUID uuid, Callback<Float, Float> callback) {
+    private void runRestAsync(float duration, UUID uuid, Callback<Float> callback) {
         Timer.this.runAsync(duration, getTimeValue(duration), uuid, (Float overTime) -> {
             if (overTime == 0) {
                 callback.call(overTime);
             }
-            return null;
         });
     }
 
