@@ -9,24 +9,26 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Timer {
 
+    private final Pattern POINT_TO_UNDERSCORE = Pattern.compile("\\.");
+    private final Map<String, DecimalFormat> formatter = new HashMap<>();
     private final Map<UUID, Float> timers = new HashMap<>();
     private final Plugin plugin;
-    private final DecimalFormat decimal;
-    private final Pattern POINT_TO_UNDERSCORE = Pattern.compile("\\.");
+    private final String defaultDecimalFormat;
 
     public Timer(Plugin plugin) {
         this.plugin = plugin;
-        this.decimal = new DecimalFormat("0.0");
+        this.defaultDecimalFormat = "0.0";
+        formatter.put("0.0", new DecimalFormat("0.0"));
     }
 
     public Timer(Plugin plugin, String decimalFormat) {
         this.plugin = plugin;
-        this.decimal = new DecimalFormat(decimalFormat);
+        this.defaultDecimalFormat = decimalFormat;
+        formatter.put(decimalFormat, new DecimalFormat(decimalFormat));
     }
 
     public void run(float duration, Time time) {
@@ -398,12 +400,15 @@ public class Timer {
     }
 
     public String formatTime(float time) {
-        return decimal.format(time);
+        return formatter.get(defaultDecimalFormat).format(time);
     }
 
     public String formatTime(float time, String format) {
-        DecimalFormat decimalFormat = new DecimalFormat(format);
-        return decimalFormat.format(time);
+        if (formatter.get(format) == null) {
+            formatter.put(format, new DecimalFormat(format));
+        }
+
+        return formatter.get(format).format(time);
     }
 
     public float getCoolDown(UUID uuid) {
@@ -432,6 +437,7 @@ public class Timer {
 
     private void runRest(float duration, Callback<Float, Float> callback) {
         run(duration, getTimeValue(duration), (Float overTime) -> {
+            Bukkit.broadcastMessage("overtime ->" + overTime);
             if (overTime == 0) {
                 callback.call(overTime);
             }
