@@ -1,4 +1,4 @@
-package fr.devsCheese.bukkitTimer;
+package fr.cheeseGrinder.bukkitTimer;
 
 @FunctionalInterface
 public interface EmptyCallback {

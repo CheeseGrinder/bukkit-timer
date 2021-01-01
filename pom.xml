@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.DevsCheese</groupId>
+    <groupId>fr.CheeseGrinder</groupId>
     <artifactId>bukkit-timer</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
 
     <name>BukkitTimer</name>
@@ -22,7 +22,7 @@
         <repository>
             <id>github</id>
             <name>GitHub DevsCheese Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/DevsCheese/bukkit-timer</url>
+            <url>https://maven.pkg.github.com/CheeseGrinder/bukkit-timer</url>
         </repository>
     </distributionManagement>
 
@@ -30,15 +30,15 @@
         <developer>
             <name>Devs Cheese</name>
             <email>devs.cheese@gmail.com</email>
-            <organization>com.github.devscheese</organization>
-            <organizationUrl>https://github.com/DevsCheese/Bukkit-timer</organizationUrl>
+            <organization>com.github.cheesegrinder</organization>
+            <organizationUrl>https://github.com/CheeseGrinder/Bukkit-timer</organizationUrl>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/DevsCheese/Bukkit-timer.git</connection>
-        <developerConnection>scm:git:https://github.com/DevsCheese/Bukkit-timer.git</developerConnection>
-        <url>https://github.com/DevsCheese/Bukkit-timer</url>
+        <connection>scm:git:git://github.com/CheeseGrinder/Bukkit-timer.git</connection>
+        <developerConnection>scm:git:https://github.com/CheeseGrinder/Bukkit-timer.git</developerConnection>
+        <url>https://github.com/CheeseGrinder/Bukkit-timer</url>
         <tag>Bukkit-timer</tag>
     </scm>
 
