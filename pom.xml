@@ -6,41 +6,46 @@
 
     <groupId>fr.CheeseGrinder</groupId>
     <artifactId>bukkit-timer</artifactId>
-    <version>1.2.2</version>
+    <version>1.3.0</version>
     <packaging>jar</packaging>
 
-    <name>BukkitTimer</name>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>A Bukkit 1.12.2 Timer</description>
+    <url>https://github.com/CheeseGrinder/bukkit-timer</url>
+
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.fr.html</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Sukaato</name>
+            <email>sukaato.dev@gmail.com</email>
+            <organization>Cheese Grinder</organization>
+            <organizationUrl>https://github.com/CheeseGrinder</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/CheeseGrinder/bukkit-timer.git</connection>
+        <developerConnection>scm:git:ssh://github.com:CheeseGrinder/bukkit-timer.git</developerConnection>
+        <url>http://github.com/CheeseGrinder/bukkit-timer/tree/master</url>
+    </scm>
 
     <properties>
-        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.version>1.12.2-R0.1-SNAPSHOT</spigot.version>
-        <lombok.version>1.18.16</lombok.version>
     </properties>
 
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>GitHub DevsCheese Apache Maven Packages</name>
+            <name>GitHub Cheese Grinder Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/CheeseGrinder/bukkit-timer</url>
         </repository>
     </distributionManagement>
-
-    <developers>
-        <developer>
-            <name>Devs Cheese</name>
-            <email>devs.cheese@gmail.com</email>
-            <organization>com.github.cheesegrinder</organization>
-            <organizationUrl>https://github.com/CheeseGrinder/Bukkit-timer</organizationUrl>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git://github.com/CheeseGrinder/Bukkit-timer.git</connection>
-        <developerConnection>scm:git:https://github.com/CheeseGrinder/Bukkit-timer.git</developerConnection>
-        <url>https://github.com/CheeseGrinder/Bukkit-timer</url>
-        <tag>Bukkit-timer</tag>
-    </scm>
 
     <build>
         <plugins>
@@ -49,8 +54,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
@@ -83,14 +88,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
