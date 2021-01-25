@@ -29,10 +29,10 @@ public class Timer {
         formatter.put(decimalFormat, new DecimalFormat(decimalFormat));
     }
 
-    public void run(float duration, Time time) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable run(float duration, Time time) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
             private float timeLeft = duration;
 
@@ -45,21 +45,24 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.run(timeLeft, getTimeValue(timeLeft));
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimer(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void run(float duration, Time time, EmptyCallback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable run(float duration, Time time, EmptyCallback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         callback.call();
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
             private float timeLeft = duration;
 
@@ -73,21 +76,24 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.run(timeLeft, getTimeValue(timeLeft), callback);
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimer(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void run(float duration, Time time, Callback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable run(float duration, Time time, Callback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         callback.call(duration);
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
             private float timeLeft = duration;
 
@@ -103,21 +109,24 @@ public class Timer {
                             if (overTime == 0) callback.call(overTime);
                         });
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimer(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void run(float duration, Time time, UUID uuid) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable run(float duration, Time time, UUID uuid) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
 
             @Override
@@ -132,23 +141,25 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.run(timeLeft, getTimeValue(timeLeft), uuid);
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
-
             }
-        }.runTaskTimer(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimer(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void run(float duration, Time time, UUID uuid, EmptyCallback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable run(float duration, Time time, UUID uuid, EmptyCallback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
         callback.call();
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
 
             @Override
@@ -165,22 +176,25 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.run(timeLeft, getTimeValue(timeLeft), uuid, callback);
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimer(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void run(float duration, Time time, UUID uuid, Callback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable run(float duration, Time time, UUID uuid, Callback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
         callback.call(duration);
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
 
             @Override
@@ -199,19 +213,22 @@ public class Timer {
                             if (overTime == 0) callback.call(overTime);
                         });
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimer(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runAsync(float duration, Time time) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable runAsync(float duration, Time time) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
             private float timeLeft = duration;
 
@@ -224,21 +241,24 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runAsync(timeLeft, getTimeValue(timeLeft));
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runAsync(float duration, Time time, EmptyCallback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable runAsync(float duration, Time time, EmptyCallback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         callback.call();
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable =new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
             private float timeLeft = duration;
 
@@ -252,21 +272,24 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runAsync(timeLeft, getTimeValue(timeLeft), callback);
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runAsync(float duration, Time time, Callback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable runAsync(float duration, Time time, Callback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         callback.call(duration);
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
             private float timeLeft = duration;
 
@@ -282,21 +305,24 @@ public class Timer {
                             if (overTime == 0) callback.call(overTime);
                         });
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runAsync(float duration, Time time, UUID uuid) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable runAsync(float duration, Time time, UUID uuid) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
 
             @Override
@@ -311,6 +337,7 @@ public class Timer {
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runAsync(timeLeft, getTimeValue(timeLeft), uuid);
                         cancel();
+                        return;
                     }
                     if (timeLeft <= 0) {
                         cancel();
@@ -318,16 +345,18 @@ public class Timer {
                 }
 
             }
-        }.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runAsync(float duration, Time time, UUID uuid, EmptyCallback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable runAsync(float duration, Time time, UUID uuid, EmptyCallback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
         callback.call();
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
 
             @Override
@@ -348,16 +377,18 @@ public class Timer {
                     cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runAsync(float duration, Time time, UUID uuid, Callback callback) {
-        long ticks = Time.valueOf(time.name()).getTicks();
+    public BukkitRunnable runAsync(float duration, Time time, UUID uuid, Callback callback) {
+        final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
         callback.call(duration);
 
-        new BukkitRunnable() {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
 
             @Override
@@ -375,30 +406,37 @@ public class Timer {
                         if (overTime == 0) callback.call(overTime);
                     });
                     cancel();
+                    return;
                 }
                 if (timeLeft <= 0) {
                     cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        };
+        runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
+        return runnable;
     }
 
-    public void runLater(long delay, EmptyCallback callback) {
-        new BukkitRunnable() {
+    public BukkitRunnable runLater(long delay, EmptyCallback callback) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 callback.call();
             }
-        }.runTaskLater(plugin, delay);
+        };
+        runnable.runTaskLater(plugin, delay);
+        return runnable;
     }
 
-    public void runLaterAsync(long delay, EmptyCallback callback) {
-        new BukkitRunnable() {
+    public BukkitRunnable runLaterAsync(long delay, EmptyCallback callback) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 callback.call();
             }
-        }.runTaskLaterAsynchronously(plugin, delay);
+        };
+        runnable.runTaskLaterAsynchronously(plugin, delay);
+        return runnable;
     }
 
     public String formatTime(float time) {
@@ -430,7 +468,7 @@ public class Timer {
     }
 
     private Time getTimeValue(float duration) {
-        String rest = POINT_TO_UNDERSCORE
+        final String rest = POINT_TO_UNDERSCORE
                 .matcher(String.valueOf(duration))
                 .replaceAll("_");
 
