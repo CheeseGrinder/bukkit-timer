@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 public class Timer {
@@ -57,10 +58,10 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
-    public BukkitTask runSync(float duration, Time time, EmptyCallback callback) {
+    public BukkitTask runSync(float duration, Time time, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
-        callback.call();
+        callback.run();
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -71,7 +72,7 @@ public class Timer {
                 if (!isCancelled()) {
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
-                        callback.call();
+                        callback.run();
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runSync(timeLeft, getTimeValue(timeLeft), callback);
@@ -87,10 +88,10 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
-    public BukkitTask runSync(float duration, Time time, Callback callback) {
+    public BukkitTask runSync(float duration, Time time, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
-        callback.call(duration);
+        callback.accept(duration);
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -101,11 +102,11 @@ public class Timer {
                 if (!isCancelled()) {
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
-                        callback.call(timeLeft);
+                        callback.accept(timeLeft);
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runSync(duration, getTimeValue(duration), (overTime) -> {
-                            if (overTime == 0) callback.call(overTime);
+                            if (overTime == 0) callback.accept(overTime);
                         });
                         cancel();
                         return;
@@ -150,11 +151,11 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
-    public BukkitTask runSync(float duration, Time time, UUID uuid, EmptyCallback callback) {
+    public BukkitTask runSync(float duration, Time time, UUID uuid, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
-        callback.call();
+        callback.run();
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -167,7 +168,7 @@ public class Timer {
                     if (timeLeft >= decrement) {
                         timeLeft = formatTimeLeft(timeLeft - decrement);
 
-                        callback.call();
+                        callback.run();
                         setCoolDown(uuid, timeLeft);
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
@@ -184,11 +185,11 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
-    public BukkitTask runSync(float duration, Time time, UUID uuid, Callback callback) {
+    public BukkitTask runSync(float duration, Time time, UUID uuid, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
-        callback.call(duration);
+        callback.accept(duration);
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -201,12 +202,12 @@ public class Timer {
                     if (timeLeft >= decrement) {
                         timeLeft = formatTimeLeft(timeLeft - decrement);
 
-                        callback.call(timeLeft);
+                        callback.accept(timeLeft);
                         setCoolDown(uuid, timeLeft);
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runSync(timeLeft, getTimeValue(timeLeft), uuid, (overTime) -> {
-                            if (overTime == 0) callback.call(overTime);
+                            if (overTime == 0) callback.accept(overTime);
                         });
                         cancel();
                         return;
@@ -247,10 +248,10 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public BukkitTask runAsync(float duration, Time time, EmptyCallback callback) {
+    public BukkitTask runAsync(float duration, Time time, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
-        callback.call();
+        callback.run();
 
         final BukkitRunnable runnable =new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -261,7 +262,7 @@ public class Timer {
                 if (!isCancelled()) {
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
-                        callback.call();
+                        callback.run();
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runAsync(timeLeft, getTimeValue(timeLeft), callback);
@@ -277,10 +278,10 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public BukkitTask runAsync(float duration, Time time, Callback callback) {
+    public BukkitTask runAsync(float duration, Time time, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
-        callback.call(duration);
+        callback.accept(duration);
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -291,11 +292,11 @@ public class Timer {
                 if (!isCancelled()) {
                     if (timeLeft >= decrement) {
                         this.timeLeft = formatTimeLeft(timeLeft - decrement);
-                        callback.call(timeLeft);
+                        callback.accept(timeLeft);
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
                         Timer.this.runAsync(timeLeft, getTimeValue(timeLeft), (overTime) -> {
-                            if (overTime == 0) callback.call(overTime);
+                            if (overTime == 0) callback.accept(overTime);
                         });
                         cancel();
                         return;
@@ -341,11 +342,11 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public BukkitTask runAsync(float duration, Time time, UUID uuid, EmptyCallback callback) {
+    public BukkitTask runAsync(float duration, Time time, UUID uuid, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
-        callback.call();
+        callback.run();
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -357,7 +358,7 @@ public class Timer {
                 if (timeLeft >= decrement) {
                     timeLeft = formatTimeLeft(timeLeft - decrement);
 
-                    callback.call();
+                    callback.run();
                     setCoolDown(uuid, timeLeft);
                 }
                 if (timeLeft < decrement && timeLeft > 0f) {
@@ -372,11 +373,11 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public BukkitTask runAsync(float duration, Time time, UUID uuid, Callback callback) {
+    public BukkitTask runAsync(float duration, Time time, UUID uuid, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
         setCoolDown(uuid, duration);
-        callback.call(duration);
+        callback.accept(duration);
 
         final BukkitRunnable runnable = new BukkitRunnable() {
             private final float decrement = Time.valueOf(time.name()).getDecrement();
@@ -388,12 +389,12 @@ public class Timer {
                 if (timeLeft >= decrement) {
                     timeLeft = formatTimeLeft(timeLeft - decrement);
 
-                    callback.call(timeLeft);
+                    callback.accept(timeLeft);
                     setCoolDown(uuid, timeLeft);
                 }
                 if (timeLeft < decrement && timeLeft > 0f) {
                     Timer.this.runAsync(duration, getTimeValue(duration), uuid, (overTime) -> {
-                        if (overTime == 0) callback.call(overTime);
+                        if (overTime == 0) callback.accept(overTime);
                     });
                     cancel();
                     return;
@@ -406,21 +407,21 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
-    public BukkitTask runLaterSync(long ticks, EmptyCallback callback) {
+    public BukkitTask runLaterSync(long ticks, Runnable callback) {
         final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                callback.call();
+                callback.run();
             }
         };
         return runnable.runTaskLater(plugin, ticks);
     }
 
-    public BukkitTask runLaterAsync(long ticks, EmptyCallback callback) {
+    public BukkitTask runLaterAsync(long ticks, Runnable callback) {
         final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                callback.call();
+                callback.run();
             }
         };
         return runnable.runTaskLaterAsynchronously(plugin, ticks);
