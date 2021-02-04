@@ -1,6 +1,7 @@
 package fr.cheeseGrinder.bukkitTimer;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -16,16 +17,25 @@ public class Timer {
     private final Pattern POINT_TO_UNDERSCORE = Pattern.compile("\\.");
     private final Map<String, DecimalFormat> formatter = new HashMap<>();
     private final Map<UUID, Float> timers = new HashMap<>();
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
     private final String defaultDecimalFormat;
 
-    public Timer(Plugin plugin) {
-        this.plugin = plugin;
-        this.defaultDecimalFormat = "0.0";
-        formatter.put("0.0", new DecimalFormat("0.0"));
+    /**
+     * Create a timer with default decimalFormat {@code "0.00"}
+     * @param plugin our plugin
+     * @see #Timer(T, String)
+     */
+    public <T extends JavaPlugin> Timer(T plugin) {
+        this(plugin, "0.00");
     }
 
-    public Timer(Plugin plugin, String decimalFormat) {
+    /**
+     * Create a timer with custom decimal format
+     * @param plugin our plugin
+     * @param decimalFormat custom decimal format
+     *
+     */
+    public <T extends JavaPlugin> Timer(T plugin, String decimalFormat) {
         this.plugin = plugin;
         this.defaultDecimalFormat = decimalFormat;
         formatter.put(decimalFormat, new DecimalFormat(decimalFormat));
@@ -122,7 +132,7 @@ public class Timer {
                         callback.accept(timeLeft);
                     }
                     if (timeLeft < decrement && timeLeft > 0f) {
-                        Timer.this.runSync(duration, getTimeValue(duration), (overTime) -> {
+                        Timer.this.runSync(timeLeft, getTimeValue(timeLeft), (overTime) -> {
                             if (overTime == 0) callback.accept(overTime);
                         });
                         cancel();
@@ -467,7 +477,7 @@ public class Timer {
                     setCoolDown(uuid, timeLeft);
                 }
                 if (timeLeft < decrement && timeLeft > 0f) {
-                    Timer.this.runAsync(duration, getTimeValue(duration), uuid, (overTime) -> {
+                    Timer.this.runAsync(timeLeft, getTimeValue(timeLeft), uuid, (overTime) -> {
                         if (overTime == 0) callback.accept(overTime);
                     });
                     cancel();
@@ -517,7 +527,7 @@ public class Timer {
      * @param callback action
      * @return a task that can be stopped
      */
-    public BukkitTask runSync(long ticks, Runnable callback) {
+    public BukkitTask runLoopSync(long ticks, Runnable callback) {
         final BukkitRunnable runnable = new BukkitRunnable() {
 
             @Override
@@ -534,7 +544,7 @@ public class Timer {
      * @param callback action
      * @return a task that can be stopped
      */
-    public BukkitTask runAsync(long ticks, Runnable callback) {
+    public BukkitTask runLoopAsync(long ticks, Runnable callback) {
         final BukkitRunnable runnable = new BukkitRunnable() {
 
             @Override
@@ -570,14 +580,14 @@ public class Timer {
     }
 
     private float formatTimeLeft(float timeLeft) {
-        return Math.round(timeLeft * 10f) / 10f;
+        return Math.round(timeLeft * 100f) / 100f;
     }
 
     private Time getTimeValue(float duration) {
         final String rest = POINT_TO_UNDERSCORE
                 .matcher(String.valueOf(duration))
                 .replaceAll("_");
-
+        
         return Time.valueOf("EVERY_" + rest);
     }
 
