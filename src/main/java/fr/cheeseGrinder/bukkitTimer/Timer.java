@@ -31,6 +31,11 @@ public class Timer {
         formatter.put(decimalFormat, new DecimalFormat(decimalFormat));
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @return a task that can be stopped
+     */
     public BukkitTask runSync(float duration, Time time) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -58,6 +63,12 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param callback action called after each decrement
+     * @return a task that can be stopped
+     */
     public BukkitTask runSync(float duration, Time time, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -88,6 +99,12 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param callback action called after each decrement with the remaining {@code time} as a parameter.
+     * @return a task that can be stopped
+     */
     public BukkitTask runSync(float duration, Time time, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -120,6 +137,12 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param uuid of an entity to which you want to assign the timer
+     * @return a task that can be stopped
+     */
     public BukkitTask runSync(float duration, Time time, UUID uuid) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -151,6 +174,13 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param uuid of an entity to which you want to assign the timer
+     * @param callback action called after each decrement
+     * @return a task that can be stopped
+     */
     public BukkitTask runSync(float duration, Time time, UUID uuid, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -185,6 +215,13 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param uuid of an entity to which you want to assign the timer
+     * @param callback action called after each decrement with the remaining {@code time} as a parameter.
+     * @return a task that can be stopped
+     */
     public BukkitTask runSync(float duration, Time time, UUID uuid, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -221,6 +258,11 @@ public class Timer {
         return runnable.runTaskTimer(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @return a task that can be stopped
+     */
     public BukkitTask runAsync(float duration, Time time) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -248,6 +290,12 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param callback action called after each decrement
+     * @return a task that can be stopped
+     */
     public BukkitTask runAsync(float duration, Time time, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -278,6 +326,12 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param callback action called after each decrement with the remaining {@code time} as a parameter.
+     * @return a task that can be stopped
+     */
     public BukkitTask runAsync(float duration, Time time, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -310,6 +364,12 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param uuid of an entity to which you want to assign the timer
+     * @return a task that can be stopped
+     */
     public BukkitTask runAsync(float duration, Time time, UUID uuid) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -342,6 +402,13 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param uuid of an entity to which you want to assign the timer
+     * @param callback action called after each decrement
+     * @return a task that can be stopped
+     */
     public BukkitTask runAsync(float duration, Time time, UUID uuid, Runnable callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -373,6 +440,13 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
+    /**
+     * @param duration total timer time
+     * @param time before each decrement
+     * @param uuid of an entity to which you want to assign the timer
+     * @param callback action called after each decrement with the remaining {@code time} as a parameter.
+     * @return a task that can be stopped
+     */
     public BukkitTask runAsync(float duration, Time time, UUID uuid, Consumer<Float> callback) {
         final long ticks = Time.valueOf(time.name()).getTicks();
 
@@ -407,6 +481,11 @@ public class Timer {
         return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
+    /**
+     * @param ticks time before callback call
+     * @param callback action
+     * @return a task that can be stopped
+     */
     public BukkitTask runLaterSync(long ticks, Runnable callback) {
         final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
@@ -417,6 +496,11 @@ public class Timer {
         return runnable.runTaskLater(plugin, ticks);
     }
 
+    /**
+     * @param ticks time before callback call
+     * @param callback action
+     * @return a task that can be stopped
+     */
     public BukkitTask runLaterAsync(long ticks, Runnable callback) {
         final BukkitRunnable runnable = new BukkitRunnable() {
             @Override
@@ -425,6 +509,40 @@ public class Timer {
             }
         };
         return runnable.runTaskLaterAsynchronously(plugin, ticks);
+    }
+
+    /**
+     * <b>This method will create an infinite loop, be careful when using it.</b>
+     * @param ticks time before each action
+     * @param callback action
+     * @return a task that can be stopped
+     */
+    public BukkitTask runSync(long ticks, Runnable callback) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (!isCancelled()) callback.run();
+            }
+        };
+        return runnable.runTaskTimer(plugin, ticks, ticks);
+    }
+
+    /**
+     * <b>This method will create an infinite loop, be careful when using it.</b>
+     * @param ticks time before each action
+     * @param callback action
+     * @return a task that can be stopped
+     */
+    public BukkitTask runAsync(long ticks, Runnable callback) {
+        final BukkitRunnable runnable = new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                if (!isCancelled()) callback.run();
+            }
+        };
+        return runnable.runTaskTimerAsynchronously(plugin, ticks, ticks);
     }
 
     public String formatTime(float time) {
@@ -460,7 +578,7 @@ public class Timer {
                 .matcher(String.valueOf(duration))
                 .replaceAll("_");
 
-        return Time.valueOf("SECOND_" + rest);
+        return Time.valueOf("EVERY_" + rest);
     }
 
 }

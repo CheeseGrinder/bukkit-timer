@@ -6,11 +6,11 @@
 
     <groupId>fr.CheeseGrinder</groupId>
     <artifactId>bukkit-timer</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>A Bukkit 1.12.2 Timer</description>
+    <description>A Bukkit Timer</description>
     <url>https://github.com/CheeseGrinder/bukkit-timer</url>
 
     <licenses>
