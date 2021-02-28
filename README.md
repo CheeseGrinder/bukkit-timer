@@ -1,6 +1,8 @@
 # bukkit-timer
 Simple timer for Bukkit
 
+## [Wiki](https://github.com/CheeseGrinder/bukkit-timer/wiki)
+
 # TESTED
 - ❌ - 1.8
 - ❌ - 1.9
