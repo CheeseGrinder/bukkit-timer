@@ -6,6 +6,7 @@ Simple timer for Bukkit
 # Status
 
 [![Java CI](https://github.com/CheeseGrinder/bukkit-timer/actions/workflows/maven.yml/badge.svg)](https://github.com/CheeseGrinder/bukkit-timer/actions/workflows/maven.yml)
+
 [![Maven Package](https://github.com/CheeseGrinder/bukkit-timer/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/CheeseGrinder/bukkit-timer/actions/workflows/maven-publish.yml)
 
 # TESTED
